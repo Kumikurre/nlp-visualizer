@@ -2,6 +2,10 @@ import { Component, OnInit, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
+
+// THIS COMPONENT USES NGX-GRAPHS:
+// https://github.com/swimlane/ngx-charts
+
 @Component({
   selector: 'app-graph',
   templateUrl: './graph.component.html',
