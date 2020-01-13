@@ -1,7 +1,7 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-
+import {WebsocketService} from '../websocket.service';
 
 // THIS COMPONENT USES NGX-GRAPHS:
 // https://github.com/swimlane/ngx-charts
@@ -30,13 +30,19 @@ export class GraphComponent implements OnInit {
     domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
   };
 
+  messages = [];
 
-  constructor() {
+  conn;
+
+  constructor(private webSocket: WebsocketService) {
     Object.assign(this, { data });
    }
 
-  ngOnInit() {
+   ngOnInit() {
+    this.conn = this.webSocket.connect('ws://localhost:8765');
+    console.log(this.conn)
   }
+
   onSelect(data): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
   }

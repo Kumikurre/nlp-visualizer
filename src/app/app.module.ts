@@ -7,6 +7,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GraphComponent } from './graph/graph.component';
+import { WebsocketService } from './websocket.service'
 
 
 
@@ -21,7 +22,7 @@ import { GraphComponent } from './graph/graph.component';
     NgxChartsModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [WebsocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
