@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Subject, Observer, Observable} from "rxjs";
+import { share } from "rxjs/operators";
 
 @Injectable()
 export class WebsocketService {
@@ -25,7 +26,8 @@ export class WebsocketService {
             this.ws.onerror = obs.error.bind(obs);
             this.ws.onclose = obs.complete.bind(obs);
             return this.ws.close.bind(this.ws);
-        }).share();
+        });
+        share();
 
     const observer = {
         next: (data: Object) => {
