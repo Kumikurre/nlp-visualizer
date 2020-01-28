@@ -25,4 +25,4 @@ RUN npm install -g @angular/cli@7.3.9
 COPY . /app
 
 # generate build
-CMD ["ng", "build", "--output-path=./deploy"]
+CMD ["./build.sh"]
