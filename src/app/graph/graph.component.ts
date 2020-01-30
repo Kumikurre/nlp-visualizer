@@ -46,7 +46,7 @@ export class GraphComponent implements OnInit {
    }
 
    ngOnInit() {
-    this.subject = this.webSocket.connect('ws://localhost:8765');
+    this.subject = this.webSocket.connect('ws://172.17.0.1:8765/client');
     this.subject.subscribe((data) => {
       this.cd.detach()
       this.newvalue = {"name":Math.floor(data.timeStamp/1000), "value":data.data}
