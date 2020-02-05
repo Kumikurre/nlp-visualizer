@@ -18,19 +18,34 @@ export class RecorderComponent implements OnInit {
     .then((permissionObj) => {
      console.log('Audio accesss permission: ', permissionObj.state);
     })
+    var recLength = 0,
+        recBuffersL = [],
+        recBuffersR = [];
 
     const handleSuccess = function(stream) {
-      console.log(stream)
       const context = new AudioContext();
       const source = context.createMediaStreamSource(stream);
-      const processor = context.createScriptProcessor(1024, 1, 1);
+      const processor = context.createScriptProcessor(4096, 2, 2);
   
       source.connect(processor);
       processor.connect(context.destination);
   
       processor.onaudioprocess = function(e) {
-        // Do something with the data, e.g. convert it to WAV
-        console.log(e.inputBuffer);
+        console.log('e: ', e)
+        if( e.playbackTime < 8 ){
+          recBuffersL.push(e.inputBuffer.getChannelData(0));
+          recBuffersR.push(e.inputBuffer.getChannelData(1));
+          // recLength += e.inputBuffer.getChannelData(0).length;
+        }
+        else{
+          recBuffersL.push(e.inputBuffer.getChannelData(0));
+          recBuffersR.push(e.inputBuffer.getChannelData(1));
+          // console.log(recBuffersL, recBuffersR)
+          recLength = 0;
+          // Should somehow reset the playbacktime here...
+          recBuffersL = [];
+          recBuffersR = [];
+        }
       }
     }
     try {
