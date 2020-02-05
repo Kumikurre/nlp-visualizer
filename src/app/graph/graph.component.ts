@@ -22,7 +22,7 @@ export class GraphComponent implements OnInit {
   yAxis: boolean = true;
   showYAxisLabel: boolean = true;
   showXAxisLabel: boolean = true;
-  xAxisLabel: string = 'Timestamp';
+  xAxisLabel: string = 'Time';
   yAxisLabel: string = 'Value';
   timeline: boolean = false;
   colorScheme = {
@@ -32,7 +32,22 @@ export class GraphComponent implements OnInit {
   // Data structure for graph
   socketdata = [
     {
-      "name": "Demodata",
+      "name": "Semantic similarity",
+      "series": [
+      ]
+    },
+    {
+      "name": "Abstraction",
+      "series": [
+      ]
+    },
+    {
+      "name": "Polysemy",
+      "series": [
+      ]
+    },
+    {
+      "name": "Information content",
       "series": [
       ]
     },
