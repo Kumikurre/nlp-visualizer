@@ -7,14 +7,16 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GraphComponent } from './graph/graph.component';
-import { WebsocketService } from './websocket.service'
+import { WebsocketService } from './websocket.service';
+import { RecorderComponent } from './recorder/recorder.component'
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    GraphComponent
+    GraphComponent,
+    RecorderComponent
   ],
   imports: [
     BrowserModule,
