@@ -31,8 +31,9 @@ export class RecorderComponent implements OnInit {
       processor.connect(context.destination);
   
       processor.onaudioprocess = function(e) {
-        console.log('e: ', e)
-        if( e.playbackTime < 8 ){
+        console.log('recLength: ', recLength)
+        recLength = recLength + e.outputBuffer.duration
+        if( recLength < 8 ){
           recBuffersL.push(e.inputBuffer.getChannelData(0));
           recBuffersR.push(e.inputBuffer.getChannelData(1));
           // recLength += e.inputBuffer.getChannelData(0).length;
@@ -40,7 +41,7 @@ export class RecorderComponent implements OnInit {
         else{
           recBuffersL.push(e.inputBuffer.getChannelData(0));
           recBuffersR.push(e.inputBuffer.getChannelData(1));
-          // console.log(recBuffersL, recBuffersR)
+          console.log(recBuffersL, recBuffersR)
           recLength = 0;
           // Should somehow reset the playbacktime here...
           recBuffersL = [];
