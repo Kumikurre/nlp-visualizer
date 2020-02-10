@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AudioapiService } from '../audioapi.service';
 
 @Component({
   selector: 'app-recorder',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RecorderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private audioApi: AudioapiService) {}
 
   ngOnInit() {
   }
@@ -43,6 +44,7 @@ export class RecorderComponent implements OnInit {
           recBuffersR.push(e.inputBuffer.getChannelData(1));
           console.log(recBuffersL, recBuffersR)
           recLength = 0;
+          this.audioApi.postData(recBuffersL, recBuffersR)
           // Should somehow reset the playbacktime here...
           recBuffersL = [];
           recBuffersR = [];
