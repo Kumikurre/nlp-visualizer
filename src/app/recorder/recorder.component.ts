@@ -19,9 +19,10 @@ export class RecorderComponent implements OnInit {
     .then((permissionObj) => {
      console.log('Audio accesss permission: ', permissionObj.state);
     })
-    var recLength = 0
+    var recLength = 0;
+    var bufferSize = 2048
     var recBuffer = []
-    var post_resp;
+    var payloadBufferLength = 0;
 
     var API = this.audioApi
 
@@ -29,19 +30,22 @@ export class RecorderComponent implements OnInit {
       
       const context = new AudioContext();
       const source = context.createMediaStreamSource(stream);
-      const processor = context.createScriptProcessor(4096, 1, 1);
+      const processor = context.createScriptProcessor(bufferSize, 2, 2);
   
       source.connect(processor);
       processor.connect(context.destination);
       processor.onaudioprocess = function(e) {
         recLength = recLength + e.outputBuffer.duration
         if( recLength < 8 ){
-          recBuffer.push(e.inputBuffer.getChannelData(0));
+          recBuffer.push(new Float32Array(e.inputBuffer.getChannelData(0)));
+          payloadBufferLength += bufferSize
         }
         else{
-          recBuffer.push(e.inputBuffer.getChannelData(0));
+          recBuffer.push(new Float32Array(e.inputBuffer.getChannelData(0)));
+          payloadBufferLength += bufferSize
+          API.postData(recBuffer, payloadBufferLength)
           recLength = 0;
-          API.postData(recBuffer)
+          payloadBufferLength = 0;
           recBuffer = [];
         }
       }
