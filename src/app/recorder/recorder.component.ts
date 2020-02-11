@@ -8,7 +8,7 @@ import { AudioapiService } from '../audioapi.service';
 })
 export class RecorderComponent implements OnInit {
 
-  constructor(private audioApi: AudioapiService) {}
+  constructor(public audioApi: AudioapiService) {}
 
   ngOnInit() {
   }
@@ -19,38 +19,34 @@ export class RecorderComponent implements OnInit {
     .then((permissionObj) => {
      console.log('Audio accesss permission: ', permissionObj.state);
     })
-    var recLength = 0,
-        recBuffersL = [],
-        recBuffersR = [];
+    var recLength = 0
+    var recBuffer = []
+    var post_resp;
+
+    var API = this.audioApi
 
     const handleSuccess = function(stream) {
+      
       const context = new AudioContext();
       const source = context.createMediaStreamSource(stream);
-      const processor = context.createScriptProcessor(4096, 2, 2);
+      const processor = context.createScriptProcessor(4096, 1, 1);
   
       source.connect(processor);
       processor.connect(context.destination);
-  
       processor.onaudioprocess = function(e) {
-        console.log('recLength: ', recLength)
         recLength = recLength + e.outputBuffer.duration
         if( recLength < 8 ){
-          recBuffersL.push(e.inputBuffer.getChannelData(0));
-          recBuffersR.push(e.inputBuffer.getChannelData(1));
-          // recLength += e.inputBuffer.getChannelData(0).length;
+          recBuffer.push(e.inputBuffer.getChannelData(0));
         }
         else{
-          recBuffersL.push(e.inputBuffer.getChannelData(0));
-          recBuffersR.push(e.inputBuffer.getChannelData(1));
-          console.log(recBuffersL, recBuffersR)
+          recBuffer.push(e.inputBuffer.getChannelData(0));
           recLength = 0;
-          this.audioApi.postData(recBuffersL, recBuffersR)
-          // Should somehow reset the playbacktime here...
-          recBuffersL = [];
-          recBuffersR = [];
+          API.postData(recBuffer)
+          recBuffer = [];
         }
       }
     }
+
     try {
       navigator.mediaDevices.getUserMedia({ audio: true, video: false })
       .then(handleSuccess);
