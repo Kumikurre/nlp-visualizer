@@ -66,7 +66,7 @@ export class AudioapiService {
       this.writeUTFBytes(view, 12, 'fmt ');
       view.setUint32(16, 16, true); // chunkSize
       view.setUint16(20, 1, true); // wFormatTag
-      view.setUint16(22, 1, true); // wChannels: mono (1 channels)
+      view.setUint16(22, 2, true); // wChannels: mono (1 channels)
       view.setUint32(24, this.sampleRate, true); // dwSamplesPerSec
       view.setUint32(28, this.sampleRate * 4, true); // dwAvgBytesPerSec
       view.setUint16(32, 4, true); // wBlockAlign
@@ -75,14 +75,13 @@ export class AudioapiService {
       this.writeUTFBytes(view, 36, 'data');
       view.setUint32(40, interleaved.length * 2, true);
 
-      var index = 44;
+      var index = 44; 
             var volume = 1;
             for (var i = 0; i < interleaved.length; i++) {
                 view.setInt16(index, interleaved[i] * (0x7FFF * volume), true);
                 index += 2;
             }
 
-      console.log('view: ', view);
       return view;
   }
 
@@ -95,10 +94,8 @@ export class AudioapiService {
 
   postData(audiobuffer, recLength){
     var data = this.data
-    console.log(audiobuffer)
     
     data = this.exportWAV(audiobuffer, recLength)
-    console.log(data)
     console.log('sending data: ', data)
     var url = URL.createObjectURL(data);
 
