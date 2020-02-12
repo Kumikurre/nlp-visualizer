@@ -11,7 +11,7 @@ export class AudioapiService {
   apiUrl = 'http://localhost:8080/api';
   data = {};
   numChannels = 1;
-  sampleRate = 44100;
+  sampleRate = 16000;
   
   writeString(view, offset, string) {
     for (let i = 0; i < string.length; i++) {
