@@ -28,9 +28,9 @@ export class RecorderComponent implements OnInit {
 
     const handleSuccess = function(stream) {
       
-      const context = new AudioContext({sampleRate: 16000});
+      const context = new AudioContext({sampleRate: 44100});
       const source = context.createMediaStreamSource(stream);
-      const processor = context.createScriptProcessor(bufferSize, 2, 2);
+      const processor = context.createScriptProcessor(bufferSize, 1, 1);
   
       source.connect(processor);
       processor.connect(context.destination);

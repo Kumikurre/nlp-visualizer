@@ -11,7 +11,7 @@ export class AudioapiService {
   apiUrl = 'http://localhost:8080/api';
   data = {};
   numChannels = 1;
-  sampleRate = 16000;
+  sampleRate = 44100;
   
   writeString(view, offset, string) {
     for (let i = 0; i < string.length; i++) {
@@ -66,7 +66,7 @@ export class AudioapiService {
       this.writeUTFBytes(view, 12, 'fmt ');
       view.setUint32(16, 16, true); // chunkSize
       view.setUint16(20, 1, true); // wFormatTag
-      view.setUint16(22, 2, true); // wChannels: stereo (2 channels)
+      view.setUint16(22, 1, true); // wChannels: mono (1 channels)
       view.setUint32(24, this.sampleRate, true); // dwSamplesPerSec
       view.setUint32(28, this.sampleRate * 4, true); // dwAvgBytesPerSec
       view.setUint16(32, 4, true); // wBlockAlign
@@ -82,6 +82,7 @@ export class AudioapiService {
                 index += 2;
             }
 
+      console.log('view: ', view);
       return view;
   }
 
