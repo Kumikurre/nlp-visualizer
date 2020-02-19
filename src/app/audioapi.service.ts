@@ -96,18 +96,14 @@ export class AudioapiService {
     var data = this.data
     
     data = this.exportWAV(audiobuffer, recLength)
-    console.log('sending data: ', data)
-    var url = URL.createObjectURL(data);
-
-    var a = document.createElement("a");
-    document.body.appendChild(a);
-    // a.style = "display: none";
-    a.href = url;
-    a.download = "sample.wav";
-    a.click();
-    window.URL.revokeObjectURL(url);
+    // var url = URL.createObjectURL(data);
+    // var a = document.createElement("a");
+    // document.body.appendChild(a);
+    // a.href = url;
+    // a.download = "sample.wav";
+    // a.click();
+    // window.URL.revokeObjectURL(url);
     return this.httpClient.post(this.apiUrl, data).subscribe(data => {
-      console.log('response from api: ', data)
   })
   }
 }

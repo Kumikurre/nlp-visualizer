@@ -32,22 +32,22 @@ export class GraphComponent implements OnInit {
   // Data structure for graph
   socketdata = [
     {
-      "name": "Semantic similarity",
+      "name": "avg_resnik_similarity",
       "series": [
       ]
     },
     {
-      "name": "Abstraction",
+      "name": "avg_abstraction_level",
       "series": [
       ]
     },
     {
-      "name": "Polysemy",
+      "name": "avg_polysemy",
       "series": [
       ]
     },
     {
-      "name": "Information content",
+      "name": "avg_ic_blanchard",
       "series": [
       ]
     },
@@ -59,16 +59,22 @@ export class GraphComponent implements OnInit {
 
   constructor(private webSocket: WebsocketService,private cd: ChangeDetectorRef) {
    }
+   data: "{'avg_polysemy': 0.461, 'avg_abstraction_level': 'avg_ic_blanchard': 0.646, 'avg_resnik_similarity': 0.059}"
 
    ngOnInit() {
     this.subject = this.webSocket.connect('ws://172.17.0.1:8765/client');
     this.subject.subscribe((data) => {
+      console.log('Rawdata from the socket: ', data)
       this.cd.detach()
-      this.newvalue = {"name":Math.floor(data.timeStamp/1000), "value":data.data}
-      this.socketdata[0].series.push(this.newvalue)
-      this.socketdata[0].series = [...this.socketdata[0].series]
-      this.socketdata = this.socketdata.slice()
-      console.log(this.socketdata)
+      let incoming_data = JSON.parse(data.data)
+      let timestamp = Math.floor(data.timeStamp/1000)
+      for (var semvar in incoming_data) {
+        let datapoint = {}
+        datapoint["name"] = timestamp
+        datapoint["value"] = incoming_data[semvar]
+        this.socketdata.find(o => o.name == semvar)["series"].push(datapoint)
+
+      }
       this.cd.detectChanges()
 
     });
