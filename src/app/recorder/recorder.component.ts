@@ -14,7 +14,7 @@ export class RecorderComponent implements OnInit {
   }
 
   start_recording(){
-    console.log('starting recording, and sending data to URL:', 'demourl')
+    console.log('starting recording, and sending data. listening to : ', 'ws://172.17.0.1:8765/client')
     navigator.permissions.query({name: 'microphone'})
     .then((permissionObj) => {
      console.log('Audio accesss permission: ', permissionObj.state);
