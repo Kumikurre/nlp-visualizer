@@ -11,7 +11,8 @@ import { AudioapiService } from './audioapi.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GraphComponent } from './graph/graph.component';
-import { RecorderComponent } from './recorder/recorder.component'
+import { RecorderComponent } from './recorder/recorder.component';
+import { ThumbComponent } from './thumb/thumb.component'
 
 
 
@@ -19,7 +20,8 @@ import { RecorderComponent } from './recorder/recorder.component'
   declarations: [
     AppComponent,
     GraphComponent,
-    RecorderComponent
+    RecorderComponent,
+    ThumbComponent
   ],
   imports: [
     BrowserModule,
