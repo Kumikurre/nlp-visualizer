@@ -34,29 +34,29 @@ export class GraphComponent implements OnInit {
     {
       "name": "avg_resnik_similarity",
       "series": [
-        {"name": 0, "value":4},
-        {"name": 1, "value":15},
+        // {"name": 0, "value":4},
+        // {"name": 1, "value":15},
       ]
     },
     {
       "name": "avg_abstraction_level",
       "series": [
-        {"name": 0, "value":6},
-        {"name": 1, "value":4},
+        // {"name": 0, "value":6},
+        // {"name": 1, "value":4},
       ]
     },
     {
       "name": "avg_polysemy",
       "series": [
-        {"name": 0, "value":2},
-        {"name": 1, "value":6},
+        // {"name": 0, "value":2},
+        // {"name": 1, "value":6},
       ]
     },
     {
       "name": "avg_ic_blanchard",
       "series": [
-        {"name": 0, "value":11},
-        {"name": 1, "value":4},
+        // {"name": 0, "value":11},
+        // {"name": 1, "value":4},
       ]
     },
   ]
@@ -69,33 +69,40 @@ export class GraphComponent implements OnInit {
    }
 
    ngOnInit() {
+    // this.cd.detach()
     this.subject = this.webSocket.connect('ws://172.17.0.1:8765/client');
     this.subject.subscribe((data) => {
-      this.cd.detach()
+
       // Fix parsing issue with single quotes
       let parsed_data = data["data"].replace(/'/g, '"')
+
       // Parse string to object
       let incoming_data = JSON.parse(parsed_data)
       // Make a reasonable timestamp
       let timestamp = Math.floor(data.timeStamp/1000)
+
       // Loop over the keys in incoming data
       for (var semvar in incoming_data) {
         // Construct a new datapoint to be added to the internal data structure
-        let datapoint:{"name": number,"value":number}
+        let datapoint = {
+          "name": 0,"value":0
+        }
+
         datapoint["name"] = timestamp
         datapoint["value"] = incoming_data[semvar]
-
           // Loop over the data structure to find the correct object
         for (var dataset in this.socketdata){
           if (semvar == this.socketdata[dataset]["name"]){
             // Push the data to the array
             this.socketdata[dataset]["series"].push(datapoint)
+            // this.cd.detectChanges()
           }
         }
-
+        // this.cd.detectChanges()
       }
-      this.cd.detectChanges()
-
+      // this.cd.detectChanges()
+      this.socketdata = this.socketdata.slice();
+      console.log("this.socketdata: ", this.socketdata)
     });
   }
 
