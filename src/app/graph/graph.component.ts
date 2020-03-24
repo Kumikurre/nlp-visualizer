@@ -69,41 +69,41 @@ export class GraphComponent implements OnInit {
    }
 
    ngOnInit() {
-    // this.cd.detach()
-    this.subject = this.webSocket.connect('ws://172.17.0.1:8765/client');
-    this.subject.subscribe((data) => {
+    // // this.cd.detach()
+    // this.subject = this.webSocket.connect('ws://172.17.0.1:8765/client');
+    // this.subject.subscribe((data) => {
 
-      // Fix parsing issue with single quotes
-      let parsed_data = data["data"].replace(/'/g, '"')
+    //   // Fix parsing issue with single quotes
+    //   let parsed_data = data["data"].replace(/'/g, '"')
 
-      // Parse string to object
-      let incoming_data = JSON.parse(parsed_data)
-      // Make a reasonable timestamp
-      let timestamp = Math.floor(data.timeStamp/1000)
+    //   // Parse string to object
+    //   let incoming_data = JSON.parse(parsed_data)
+    //   // Make a reasonable timestamp
+    //   let timestamp = Math.floor(data.timeStamp/1000)
 
-      // Loop over the keys in incoming data
-      for (var semvar in incoming_data) {
-        // Construct a new datapoint to be added to the internal data structure
-        let datapoint = {
-          "name": 0,"value":0
-        }
+    //   // Loop over the keys in incoming data
+    //   for (var semvar in incoming_data) {
+    //     // Construct a new datapoint to be added to the internal data structure
+    //     let datapoint = {
+    //       "name": 0,"value":0
+    //     }
 
-        datapoint["name"] = timestamp
-        datapoint["value"] = incoming_data[semvar]
-          // Loop over the data structure to find the correct object
-        for (var dataset in this.socketdata){
-          if (semvar == this.socketdata[dataset]["name"]){
-            // Push the data to the array
-            this.socketdata[dataset]["series"].push(datapoint)
-            // this.cd.detectChanges()
-          }
-        }
-        // this.cd.detectChanges()
-      }
-      // this.cd.detectChanges()
-      this.socketdata = this.socketdata.slice();
-      console.log("this.socketdata: ", this.socketdata)
-    });
+    //     datapoint["name"] = timestamp
+    //     datapoint["value"] = incoming_data[semvar]
+    //       // Loop over the data structure to find the correct object
+    //     for (var dataset in this.socketdata){
+    //       if (semvar == this.socketdata[dataset]["name"]){
+    //         // Push the data to the array
+    //         this.socketdata[dataset]["series"].push(datapoint)
+    //         // this.cd.detectChanges()
+    //       }
+    //     }
+    //     // this.cd.detectChanges()
+    //   }
+    //   // this.cd.detectChanges()
+    //   this.socketdata = this.socketdata.slice();
+    //   console.log("this.socketdata: ", this.socketdata)
+    // });
   }
 
   onSelect(val): void {

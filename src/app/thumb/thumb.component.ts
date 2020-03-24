@@ -13,21 +13,26 @@ export class ThumbComponent implements OnInit {
   // Constants that help websocket to establish communication
   subject;
   isThumbUp: boolean = true;
+
+
   ngOnInit() {
-    // this.subject = this.webSocket.connect('ws://172.17.0.1:8765/client');
-    // this.subject.subscribe((data) => {
-      // // Fix parsing issue with single quotes
-      // let parsed_data = data["data"].replace(/'/g, '"')
-      // // Parse string to object
-      // let incoming_data = JSON.parse(parsed_data)
-  
-      // if (incoming_data["value"] >= 0.5){
-      //   this.isThumbUp = true;
-      // }
-      // else{
-      //   this.isThumbUp = false;
-      // }
-    // })
+    this.subject = this.webSocket.connect('ws://172.17.0.1:8765/client');
+    let previous_avg_similarity = 0;
+    this.subject.subscribe((data) => {
+      // Fix parsing issue with single quotes
+      let parsed_data = data["data"].replace(/'/g, '"')
+      // Parse string to object
+      let incoming_data = JSON.parse(parsed_data)
+      console.log("incoming_data: ", incoming_data)
+      if (incoming_data["avg_resnik_similarity"] >= previous_avg_similarity){
+        this.isThumbUp = true;
+      }
+      else{
+        this.isThumbUp = false;
+      }
+      this.isThumbUp = !this.isThumbUp
+      previous_avg_similarity = incoming_data["avg_resnik_similarity"]
+    })
     }
 
     swapThumb(){
