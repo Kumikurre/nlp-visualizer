@@ -12,7 +12,8 @@ export class ThumbComponent implements OnInit {
 
   // Constants that help websocket to establish communication
   subject;
-  isThumbUp: boolean = true;
+  val: number;
+  isThumbUp: boolean = false;
 
 
   ngOnInit() {
@@ -24,7 +25,7 @@ export class ThumbComponent implements OnInit {
       // Parse string to object
       let incoming_data = JSON.parse(parsed_data)
       console.log("incoming_data: ", incoming_data)
-      if (incoming_data["avg_resnik_similarity"] >= previous_avg_similarity){
+      if (incoming_data["avg_resnik_similarity"] <= previous_avg_similarity){
         this.isThumbUp = true;
       }
       else{
