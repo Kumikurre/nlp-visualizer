@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { WebsocketService } from '../websocket.service';
 
 @Component({
@@ -8,8 +8,8 @@ import { WebsocketService } from '../websocket.service';
 })
 export class ThumbComponent implements OnInit {
 
-  constructor(private webSocket: WebsocketService) { }
-
+  constructor(private webSocket: WebsocketService, private cd: ChangeDetectorRef) {
+  }
   // Constants that help websocket to establish communication
   subject;
   val: number;
@@ -17,6 +17,7 @@ export class ThumbComponent implements OnInit {
   isFakeData: boolean = true;
   
   ngOnInit() {
+    this.cd.detectChanges()
     if (!this.isFakeData){
       this.subject = this.webSocket.connect('ws://172.17.0.1:8765/client');
       let previous_avg_similarity = 0;
@@ -37,12 +38,19 @@ export class ThumbComponent implements OnInit {
       })
     }
     else{
-      setInterval(function(){
+      setInterval(()=> {
         this.val = Math.floor((Math.random()*100)+1);
-        console.log(this.val); 
-     }, 8000);
+        console.log("val: ", this.val);
+        if (this.val >= 50){
+          console.log(this.isThumbUp)
+          this.isThumbUp = !this.isThumbUp;
+          this.cd.detectChanges();
+          this.cd.markForCheck()
+
+        } }, 8000); 
+      }
     }
-    }
+    
 
     swapThumb(){
       this.isThumbUp = !this.isThumbUp
